@@ -6,7 +6,7 @@
 /*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:48:28 by zamgar            #+#    #+#             */
-/*   Updated: 2024/06/12 17:40:01 by zamgar           ###   ########.fr       */
+/*   Updated: 2024/06/12 18:11:43 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	ft_unsigned_putnbr_fd(unsigned int n, int fd)
 
 //n % 16 - 10 + 'a';
 
-void	ft_dec_into_hex(int n, int b) // jusqu a 127
+void	ft_dec_into_hex(int n, int b)
 {
 	int	i;
 	int	div;
@@ -100,7 +100,7 @@ void	ft_dec_into_hex(int n, int b) // jusqu a 127
 	div = n / 16;
 	mod = n % 16;
 
-	ft_putchar_fd(div + '0', 1);
+	ft_putchar_fd(string[div], 1);
 	ft_putchar_fd(string[mod], 1);
 }
 
@@ -111,7 +111,7 @@ void	ft_putptr(void *adress)
 
 	i = 0;
 	ft_putstr_fd("0x", 1);
-	ft_dec_into_hex(adress, 0);
+	ft_dec_into_hex(&adress, 0);
 	//printf("%p", adress);
 }
 
