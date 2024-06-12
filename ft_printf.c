@@ -6,12 +6,11 @@
 /*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 12:48:28 by zamgar            #+#    #+#             */
-/*   Updated: 2024/06/12 18:11:43 by zamgar           ###   ########.fr       */
+/*   Updated: 2024/06/12 18:33:04 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdarg.h>
+#include "ft_printf.h"
 #include <stdio.h>
 
 void	ft_putchar_fd(char c, int fd)
@@ -87,12 +86,10 @@ void	ft_unsigned_putnbr_fd(unsigned int n, int fd)
 
 void	ft_dec_into_hex(int n, int b)
 {
-	int	i;
 	int	div;
 	int	mod;
 	char	*string;
 
-	i = 0;
 	if (b == 1)
 		string = "0123456789ABCDEF";
 	if (b == 0)
@@ -104,7 +101,7 @@ void	ft_dec_into_hex(int n, int b)
 	ft_putchar_fd(string[mod], 1);
 }
 
-void	ft_putptr(void *adress)
+/*void	ft_putptr(void *adress)
 {
 	int	i;
 	char	*str;
@@ -113,19 +110,16 @@ void	ft_putptr(void *adress)
 	ft_putstr_fd("0x", 1);
 	ft_dec_into_hex(&adress, 0);
 	//printf("%p", adress);
-}
+}*/
 
 void	get_next_arg(va_list *ap, char c)
 {
-	int	i;
-
-	i = 0;
 	if (c == 'c')
-		ft_putchar_fd((va_arg(*ap, char)), 1);
+		ft_putchar_fd((va_arg(*ap, int)), 1);
 	else if (c == 's')
 		ft_putstr_fd(va_arg(*ap, char *), 1);
-	else if (c == 'p')
-		ft_putptr(va_arg(*ap, void*));
+//	else if (c == 'p')
+//		ft_putptr(va_arg(*ap, void*));
 	else if (c == 'd')
 		ft_putnbr_fd(va_arg(*ap, int), 1);
 	else if (c == 'i')
@@ -161,7 +155,7 @@ int	ft_printf(const char *str, ...)
 	return (i - 1);
 }
 
-int	main()
+/*int	main()
 {
 	int	a = 45;
 	int	b = 45;
@@ -171,4 +165,4 @@ int	main()
 	printf("x : %p\ny : %p\n\n", (void *)x, (void *)y);
 	ft_printf("ceci est l adresse de x : %p\n", (void *)x);
 	return (0);
-}
+}*/
