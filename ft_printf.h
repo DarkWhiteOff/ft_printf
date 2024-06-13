@@ -17,12 +17,13 @@
 #include <stdarg.h>
 #include <unistd.h>
 
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *str, int fd);
-void	ft_putnbr_fd(int n, int fd);
-void	ft_unsigned_putnbr_fd(unsigned int n, int fd);
-void	ft_dec_into_hex(int n, int b);
-void	get_next_arg(va_list *ap, char c);
+int	ft_putchar(char c);
+int	ft_putstr(char *str);
+int	ft_putnbr(int n);
+int	ft_unsigned_putnbr(unsigned int n);
+int	ft_dec_into_hex(long n, int b);
+int	ft_putptr(unsigned long long adress);
+int	get_next_arg(va_list *ap, char c);
 int	ft_printf(const char *str, ...);
 
 #endif
