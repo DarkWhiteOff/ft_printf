@@ -88,58 +88,23 @@ void	ft_dec_into_hex(int n, int b)
 	char	*string;
 	char	*array;
 	int	i;
+	int	count;
 
 	i = 0;
-	temp = 0;
-	string = (char *)malloc(sizeof(char) * 17);
-	array = (char *)malloc(sizeof(char) * 100);
-	if (string == NULL || array == NULL)
-		return ;
-	string = "0123456789abcdef";
-	temp = 100;
-	while(i < 100)
-	{
-		array[i] = '\0';
-		i++;
-	}
-	i = 0;
+	count = 0;
+	temp = n;
 	if (b == 1)
 		string = "0123456789ABCDEF";
 	if (b == 0)
 		string = "0123456789abcdef";
-	while (n > 0)
+	while (temp >= 1)
 	{
-		temp = n % 16;
-		array[i] = string[temp];
-		i++;
-		n = n / 16;
+		temp = temp / 16;
+		count++;
 	}
-	ft_putstr_fd(array, 1);
-	free(string);
-	free(array);
-}
-
-void	ft_long_dec_into_hex(unsigned long long n)
-{
-	unsigned long long	temp;
-	char	*string;
-	char	*array;
-	int	i;
-
-	i = 0;
-	temp = 0;
-	string = (char *)malloc(sizeof(char) * 17);
-	array = (char *)malloc(sizeof(char) * 100);
-	if (string == NULL || array == NULL)
+	array = (char *)malloc(sizeof(char) * count + 1);
+	if (array == NULL)
 		return ;
-	string = "0123456789abcdef";
-	temp = 100;
-	while(i < 100)
-	{
-		array[i] = '\0';
-		i++;
-	}
-	i = 0;
 	while (n > 0)
 	{
 		temp = n % 16;
@@ -147,18 +112,55 @@ void	ft_long_dec_into_hex(unsigned long long n)
 		i++;
 		n = n / 16;
 	}
-	ft_putstr_fd(array, 1);
-	free(string);
+	array[i] = '\0';
+	i = i - 1;
+	while (i >= 0)
+	{
+		ft_putchar_fd(array[i], 1);
+			i--;
+	}
 	free(array);
 }
 
 void	ft_putptr(unsigned long long adress)
 {
+	unsigned long long	temp;
+	char	*string;
+	char	*array;
+	int	i;
+	int	count;
+	
+	i = 0;
+	count = 0;
+	temp = adress;
+	string = "0123456789abcdef";
 	ft_putstr_fd("0x", 1);
-	ft_long_dec_into_hex(adress);
+	while (temp >= 1)
+	{
+		temp = temp / 16;
+		count++;
+	}
+	array = (char *)malloc(sizeof(char) * count + 1);
+	if (array == NULL)
+		return ;
+	while (adress > 0)
+	{
+		temp = adress % 16;
+		array[i] = string[temp];
+		i++;
+		adress = adress / 16;
+	}
+	array[i] = '\0';
+	i = i - 1;
+	while (i >= 0)
+	{
+		ft_putchar_fd(array[i], 1);
+			i--;
+	}
+	free(array);
 }
 
-void	get_next_arg(va_list *ap, char c)
+int	get_next_arg(va_list *ap, char c)
 {
 	if (c == 'c')
 		ft_putchar_fd((va_arg(*ap, int)), 1);
@@ -201,14 +203,16 @@ int	ft_printf(const char *str, ...)
 	return (i - 1); // probleme ne return pas la bonne taille
 }
 
-/*int	main()
+int	main()
 {
-	//printf("vrai printf :\n");
-	//printf(" NULL %s NULL ", (char *)NULL);
-	//printf("\n");
-	printf("%d", printf("%s%s%s", "test", "test", "test"));
-	//printf("my printf :\n");
-	//ft_printf("%s", "");
+	int	a = 16;
+	int	*x = &a;
+
+	printf("vrai printf :\n");
+	printf(" %x ", a);
+	printf("\n");
+	printf("my printf :\n");
+	ft_printf(" %x ", a);
 	printf("\n");
 	return (0);
-}*/
+}
