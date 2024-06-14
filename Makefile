@@ -10,16 +10,27 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRC =	ft_printf.c
-
-BFILES =	ft_printf.o
+SRC =	ft_printf.c \
+	ft_hex.c \
+	ft_itoa.c \
+	ft_unsigned_itoa.c \
+	ft_ptr.c \
+	ft_putcharstr.c \
+	ft_strlen.c
+	
+BFILES =	ft_printf.o \
+		ft_hex.o \
+		ft_itoa.o \
+		ft_unsigned_itoa.o \
+		ft_ptr.o \
+		ft_putcharstr.o \
+		ft_strlen.o
 
 OBJS = ${SRC:.c=.o}
 
 NAME = libftprintf.a
 
 CC = gcc
-
 FLAGS = -Wall -Wextra -Werror -I ./
 
 .c.o:
