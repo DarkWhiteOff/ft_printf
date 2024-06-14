@@ -13,6 +13,121 @@
 #include "ft_printf.h"
 #include <stdio.h>
 
+size_t	ft_strlen(const char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
+
+static int	ft_count(int n)
+{
+	int	count;
+
+	count = 0;
+	if (n == 0)
+		return (1);
+	if (n == -2147483648)
+		return (11);
+	if (n < 0)
+	{
+		n *= -1;
+		count++;
+	}
+	while (n > 0)
+	{
+		n = n / 10;
+		count++;
+	}
+	return (count);
+}
+
+static char	*ft_min(char *str)
+{
+	str[0] = '-';
+	str[1] = '2';
+	str[2] = '1';
+	str[3] = '4';
+	str[4] = '7';
+	str[5] = '4';
+	str[6] = '8';
+	str[7] = '3';
+	str[8] = '6';
+	str[9] = '4';
+	str[10] = '8';
+	str[11] = '\0';
+	return (str);
+}
+
+char	*ft_itoa(int n)
+{
+	int		i;
+	char	*str;
+
+	i = ft_count(n);
+	str = (char *)malloc(sizeof(char) * i + 1);
+	if (str == NULL)
+		return (NULL);
+	if (n == 0)
+		str[0] = '0';
+	if (n == -2147483648)
+		return (ft_min(str));
+	if (n < 0)
+	{
+		str[0] = '-';
+		n *= -1;
+	}
+	str[i] = '\0';
+	while (n >= 10)
+	{
+		str[i - 1] = n % 10 + '0';
+		n = n / 10;
+		i--;
+	}
+	str[i - 1] = n + '0';
+	return (str);
+}
+
+static int	ft_unsigned_count(unsigned int n)
+{
+	int	count;
+
+	count = 0;
+	if (n == 0)
+		return (1);
+	while (n > 0)
+	{
+		n = n / 10;
+		count++;
+	}
+	return (count);
+}
+
+char	*ft_unsigned_itoa(unsigned int n)
+{
+	int		i;
+	char	*str;
+
+	i = ft_unsigned_count(n);
+	str = (char *)malloc(sizeof(char) * i + 1);
+	if (str == NULL)
+		return (NULL);
+	if (n == 0)
+		str[0] = '0';
+	str[i] = '\0';
+	while (n >= 10)
+	{
+		str[i - 1] = n % 10 + '0';
+		n = n / 10;
+		i--;
+	}
+	str[i - 1] = n + '0';
+	return (str);
+}
+
 int	ft_putchar(char c)
 {
 	write(1, &c, 1);
@@ -37,53 +152,35 @@ int	ft_putstr(char *str)
 	return (i);
 }
 
-int	ft_putnbr(int n) // faire le calcul de la return size
+int	ft_itoa2(int n)
 {
-	if (n == 0)
-	{
-		ft_putchar('0');
-		return (1);
-	}
-	if (n == -2147483648)
-	{
-		ft_putstr("-2147483648");
-		return (11);
-	}
-	if (n < 0)
-	{
-		ft_putchar('-');
-		n *= -1;
-	}
-	if (n >= 10)
-	{
-		ft_putnbr(n / 10);
-		ft_putnbr(n % 10);
-	}
-	else
-		ft_putchar(n + '0');
-	return (0);
+	int		i;
+	char	*str;
+
+	i = 0;
+	str = ft_itoa(n);
+	i = ft_strlen((const char *)str);
+	ft_putstr(str);
+	free(str);
+	return (i);
 }
 
-int	ft_unsigned_putnbr(unsigned int n) // pareil
+int	ft_unsigned_itoa2(unsigned int n)
 {
-	if (n == 0)
-	{
-		ft_putchar('0');
-		return (1);
-	}
-	if (n >= 10)
-	{
-		ft_putnbr(n / 10);
-		ft_putnbr(n % 10);
-	}
-	else
-		ft_putchar(n + '0');
-	return (0);
+	int		i;
+	char	*str;
+
+	i = 0;
+	str = ft_unsigned_itoa(n);
+	i = ft_strlen((const char *)str);
+	ft_putstr(str);
+	free(str);
+	return (i);
 }
 
-int	ft_dec_into_hex(long n, int b)
+int	ft_dec_into_hex(unsigned int n, int b)
 {
-	int	temp;
+	unsigned int	temp;
 	char	*string;
 	char	*array;
 	int	i;
@@ -185,15 +282,15 @@ int	get_next_arg(va_list *ap, char c)
 	else if (c == 'p')
 		printed_lenght += ft_putptr(va_arg(*ap, unsigned long long));
 	else if (c == 'd')
-		printed_lenght += ft_putnbr(va_arg(*ap, int));
+		printed_lenght += ft_itoa2(va_arg(*ap, int));
 	else if (c == 'i')
-		printed_lenght += ft_putnbr(va_arg(*ap, int));
+		printed_lenght += ft_itoa2(va_arg(*ap, int));
 	else if (c == 'u')
-		printed_lenght += ft_unsigned_putnbr(va_arg(*ap, unsigned int));	
+		printed_lenght += ft_unsigned_itoa2(va_arg(*ap, unsigned int));	
 	else if (c == 'x')
 		printed_lenght += ft_dec_into_hex(va_arg(*ap, unsigned int), 0);
 	else if (c == 'X')
-		printed_lenght += ft_dec_into_hex(va_arg(*ap, long), 1);
+		printed_lenght += ft_dec_into_hex(va_arg(*ap, unsigned int), 1);
 	else if (c == '%')
 		printed_lenght += ft_putchar(c);
 	return (printed_lenght);
@@ -233,10 +330,10 @@ int	ft_printf(const char *str, ...)
 	char	*str2 = "ouieneffet";
 
 	printf("vrai printf :\n");
-	printf("%d", printf(" %x ", 9223372036854775807LL));
+	printf("%d", printf(" %d ", 10));
 	printf("\n");
 	printf("my printf :\n");
-	ft_printf("%d", ft_printf(" %x ", 9223372036854775807LL));
+	ft_printf("%d", ft_printf(" %d ", 10));
 	printf("\n");
 	return (0);
 }*/
