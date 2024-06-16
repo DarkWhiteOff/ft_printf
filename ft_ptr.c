@@ -1,31 +1,25 @@
 #include "ft_printf.h"
 
-int	ft_putptr(unsigned long long adress)
+int	ft_get_size_ptrarray(unsigned long long adress)
 {
-	unsigned long long	temp;
-	char				*string;
-	char				*array;
-	int					i;
-	int					count;
+	int	i;
 
 	i = 0;
-	count = 0;
-	temp = adress;
-	string = "0123456789abcdef";
-	if (adress == 0)
+	while (adress >= 1)
 	{
-		ft_putstr("(nil)");
-		return (5);
+		adress = adress / 16;
+		i++;
 	}
-	ft_putstr("0x");
-	while (temp >= 1)
-	{
-		temp = temp / 16;
-		count++;
-	}
-	array = (char *)malloc(sizeof(char) * count + 1);
-	if (array == NULL)
-		return (0);
+	return (i);
+}
+
+char	*ft_fill_ptrarray(unsigned long long adress, char *string, char *array)
+{
+	int					i;
+	unsigned long long	temp;
+
+	i = 0;
+	temp = 0;
 	while (adress > 0)
 	{
 		temp = adress % 16;
@@ -34,13 +28,29 @@ int	ft_putptr(unsigned long long adress)
 		adress = adress / 16;
 	}
 	array[i] = '\0';
-	temp = i;
-	i = i - 1;
-	while (i >= 0)
+	return (array);
+}
+
+int	ft_putptr(unsigned long long adress)
+{
+	char				*string;
+	char				*array;
+	int					i;
+
+	i = 0;
+	string = "0123456789abcdef";
+	if (adress == 0)
 	{
-		ft_putchar(array[i]);
-		i--;
+		ft_putstr("(nil)");
+		return (5);
 	}
+	ft_putstr("0x");
+	array = (char *)malloc(sizeof(char) * ft_get_size_ptrarray(adress) + 1);
+	if (array == NULL)
+		return (0);
+	array = ft_fill_ptrarray(adress, string, array);
+	i = ft_strlen(array);
+	ft_print_array(array, i - 1);
 	free(array);
-	return (temp + 2);
+	return (i + 2);
 }

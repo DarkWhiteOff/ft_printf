@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-//#include <stdio.h>
 
 int	get_next_arg(va_list *ap, char c)
 {
@@ -27,7 +26,7 @@ int	get_next_arg(va_list *ap, char c)
 	else if (c == 'd' || c == 'i')
 		printed_lenght += ft_itoa2(va_arg(*ap, int));
 	else if (c == 'u')
-		printed_lenght += ft_unsigned_itoa2(va_arg(*ap, unsigned int));	
+		printed_lenght += ft_unsigned_itoa2(va_arg(*ap, unsigned int));
 	else if (c == 'x')
 		printed_lenght += ft_dec_into_hex(va_arg(*ap, unsigned int), 0);
 	else if (c == 'X')
@@ -62,14 +61,3 @@ int	ft_printf(const char *str, ...)
 	}
 	return (count);
 }
-
-/*int	main(void)
-{
-	printf("vrai printf :\n");
-	printf("%d", printf(" %d ", 10));
-	printf("\n");
-	printf("my printf :\n");
-	ft_printf("%d", ft_printf(" %d ", 10));
-	printf("\n");
-	return (0);
-}*/

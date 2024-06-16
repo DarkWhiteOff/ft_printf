@@ -26,7 +26,11 @@ BFILES =	ft_printf.o \
 		ft_putcharstr.o \
 		ft_strlen.o
 
+MAIN =	 $(SRC) main.c
+BMAIN =  $(BFILES) main.o
+
 OBJS = ${SRC:.c=.o}
+OBJSMAIN = ${MAIN:.c=.o}
 
 NAME = libftprintf.a
 
@@ -41,8 +45,11 @@ all: $(NAME)
 $(NAME) : $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
+run: $(NAME) $(OBJSMAIN)
+	$(CC) $(FLAGS) $(OBJSMAIN) -L. -lftprintf -o a.out &&./a.out
+
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(OBJSMAIN)
 
 fclean: clean
 	rm -f $(NAME)
